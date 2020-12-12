@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.IO;
@@ -13,6 +13,84 @@ namespace Advent_of_Code
             Day1();
         }
 
+        private static void Day6()
+        {
+            List<char> finalChars = new List<char>();
+            List<char> characters = new List<char>();
+            var answers = File.ReadAllLines("###\\Advent of Code\\Day6.txt");
+            /*foreach (string line in answers)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    foreach (char character in characters)
+                    {
+                        finalChars.Add(character);
+                    }
+                    characters.Clear();
+                }
+                else
+                {
+                    foreach (char question in line)
+                    {
+                        if (!characters.Contains(question))
+                        {
+                            characters.Add(question);
+                        }
+                    }
+                }
+            }
+            foreach (char character in characters)
+            {
+                finalChars.Add(character);
+            }
+            Console.WriteLine($"The amount of \"Yes\" answers in the data is {finalChars.Count}");
+            Console.ReadLine();*/
+            List<string> lines = new List<string>();
+            int i = 0;
+            foreach (string line in answers)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    foreach (char character in lines[0])
+                    {
+                        foreach (string letters in lines)
+                        {
+                            if (letters.Contains(character))
+                            {
+                                i++;
+                            }
+                        }
+                        if (i == lines.Count)
+                        {
+                            finalChars.Add(character);
+                        }
+                        i = 0;
+                    }
+                    lines.Clear();
+                }
+                else
+                {
+                    lines.Add(line);
+                }
+            }
+            foreach (char character in lines[0])
+            {
+                foreach (string letters in lines)
+                {
+                    if (letters.Contains(character))
+                    {
+                        i++;
+                    }
+                }
+                if (i == lines.Count)
+                {
+                    finalChars.Add(character);
+                }
+                i = 0;
+            }
+            Console.WriteLine($"The amount of times everyone answered \"Yes\" in the data is {finalChars.Count}");
+            Console.ReadLine();
+        }
         private static void Day5()
         {
             List<int> seatIDs = new List<int>();
