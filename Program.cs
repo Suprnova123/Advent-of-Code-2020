@@ -10,7 +10,30 @@ namespace Advent_of_Code
     {
         static void Main(string[] args)
         {
-            Day1();
+            Day7();
+        }
+
+        private static void Day7()
+        {
+            //unfinished, only part 1
+            var rules = File.ReadAllLines("###\\Advent of Code\\Day7.txt");
+            List<string> holders = new List<string>();
+            holders.Add("shiny gold");
+            redo:
+            int initialCount = holders.Count;
+            foreach (string rule in rules)
+            {
+                if (holders.Any(rule.Substring(rule.IndexOf(' ')).Contains) && !holders.Contains($"{rule.Split(' ')[0]} {rule.Split(' ')[1]}"))
+                {
+                    holders.Add($"{rule.Split(' ')[0]} {rule.Split(' ')[1]}");
+                }
+            }
+            if (holders.Count != initialCount)
+            {
+                goto redo;
+            }
+            Console.WriteLine($"{initialCount - 1} bags can hold shiny gold bags.");
+            Console.ReadLine();
         }
 
         private static void Day6()
@@ -91,6 +114,7 @@ namespace Advent_of_Code
             Console.WriteLine($"The amount of times everyone answered \"Yes\" in the data is {finalChars.Count}");
             Console.ReadLine();
         }
+
         private static void Day5()
         {
             List<int> seatIDs = new List<int>();
