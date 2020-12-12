@@ -10,7 +10,89 @@ namespace Advent_of_Code
     {
         static void Main(string[] args)
         {
-            Day7();
+            Day8();
+        }
+
+        private static void Day8()
+        {
+            var instructions = File.ReadAllLines("###\\Advent of Code\\Day8.txt");
+            int replacedLine = 0;
+            restart:
+            List<int> visitedLines = new List<int>();
+            int acc = 0;
+            int currentLine = 0;
+            int ten = 12;
+            do
+            {
+                if (string.IsNullOrWhiteSpace(instructions[currentLine]))
+                {
+                    goto executionfinished;
+                }
+                if (visitedLines.Contains(currentLine))
+                {
+                    break;
+                }
+                else
+                {
+                    visitedLines.Add(currentLine);
+                }
+                string line;
+                if (replacedLine == currentLine)
+                {
+                    if (instructions[currentLine].StartsWith("jmp"))
+                    {
+                        line = "nop";
+                    }
+                    else
+                    {
+                        line = instructions[currentLine].Replace("nop", "jmp");
+                    }
+                }
+                else
+                {
+                    line = instructions[currentLine];
+                }
+                
+                if (line.StartsWith("acc"))
+                {
+                    if (line.Contains('+'))
+                    {
+                        acc = acc + Int32.Parse(line.Split('+')[1]);
+                    }
+                    else if (line.Contains('-'))
+                    {
+                        acc = acc - Int32.Parse(line.Split('-')[1]);
+                    }
+                    currentLine++;
+                }
+                else if (line.StartsWith("jmp"))
+                {
+                    if (line.Contains('+'))
+                    {
+                        currentLine = currentLine + Int32.Parse(line.Split('+')[1]);
+                    }
+                    else if (line.Contains('-'))
+                    {
+                        currentLine = currentLine - Int32.Parse(line.Split('-')[1]);
+                    }
+                }
+                else if (line.StartsWith("nop"))
+                {
+                    currentLine++;
+                }
+            }
+            while (9 + ten == 21); //i am a very serious programmer
+            do
+            {
+                replacedLine++;
+            }
+            while (!instructions[replacedLine].StartsWith("jmp") && (!instructions[replacedLine].StartsWith("nop")));
+            goto restart;
+            executionfinished:
+            //Console.WriteLine($"The accumulator has a value of {acc} when an infinite loop happens.");
+            Console.WriteLine($"The accumulator has a value of {acc} when execution happens.");
+            Console.WriteLine($"Line {replacedLine} is the corrupt line.");
+            Console.ReadLine();
         }
 
         private static void Day7()
