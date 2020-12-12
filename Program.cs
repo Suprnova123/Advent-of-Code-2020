@@ -10,9 +10,83 @@ namespace Advent_of_Code
     {
         static void Main(string[] args)
         {
-            Day8();
+            Day9();
         }
 
+        private static void Day9()
+        {
+            var preamble = File.ReadAllLines("###\\Advent of Code\\Day9.txt");
+            int startingLine = 0;
+            int brokenNum = 0;
+            do
+            {
+                List<long> values = new List<long>();
+                List<long> sums = new List<long>();
+                int i = startingLine;
+                Console.WriteLine(startingLine);
+                do
+                {
+                    values.Add(long.Parse(preamble[i]));
+                    i++;
+                }
+                while (values.Count != 25);
+                foreach (int value in values)
+                {
+                    foreach (int value2 in values)
+                    {
+                        if (value2 == value)
+                            continue;
+                        sums.Add(value + value2);
+                    }
+                }
+                foreach (int sum in sums)
+                {
+                    if (sum != Int64.Parse(preamble[startingLine + values.Count]))
+                    {
+                        brokenNum = startingLine + 25;
+                    }
+                    else
+                    {
+                        brokenNum = 0;
+                        break;
+                    }
+                }
+                values.Clear();
+                startingLine++;
+            }
+            while (brokenNum == 0);
+            int currentLine = 0;
+            int i2 = 0;
+            long min = 0;
+            long max = 0;
+            foreach(string line in preamble)
+            {
+                Console.WriteLine($"Calculating from line {currentLine}");
+                List<long> selections = new List<long>();
+                i2 = 0;
+                foreach (string line2 in preamble)
+                {
+                    if (currentLine >= i2)
+                    {
+                        i2++;
+                        continue;
+                    }
+                    selections.Add(Int64.Parse(line2));
+                    if (selections.Sum() == Int64.Parse(preamble[brokenNum]))
+                    {
+                        min = selections.Min(selections => selections);
+                        max = selections.Max(selections => selections);
+                        goto finish;
+                    }
+                    i2++;
+                }
+                currentLine++;
+            }
+        finish:
+            Console.WriteLine($"The broken number is line {brokenNum}, with a value of {preamble[brokenNum]}.");
+            Console.WriteLine($"The encryption weakness is {min + max}");
+            Console.ReadLine();
+        }
         private static void Day8()
         {
             var instructions = File.ReadAllLines("###\\Advent of Code\\Day8.txt");
