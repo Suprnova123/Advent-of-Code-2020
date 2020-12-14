@@ -11,7 +11,75 @@ namespace Advent_of_Code
     {
         static void Main(string[] args)
         {
-            Day11();
+            Day12();
+        }
+
+        private static void Day12()
+        {
+            var directions = File.ReadAllLines("###\\Advent of Code\\Day12.txt");
+            char dirChar = 'E';
+            int dir = 90;
+            int north = 0;
+            int east = 0;
+            foreach (string nav in directions)
+            {
+                char instruct = nav.Substring(0, 1).ToCharArray()[0];
+                redo:
+                if (instruct == 'N')
+                {
+                    north = north + Int32.Parse(nav.Substring(1));
+                    continue;
+                }
+                else if (instruct == 'S')
+                {
+                    north = north - Int32.Parse(nav.Substring(1));
+                    continue;
+                }
+                else if (instruct == 'E')
+                {
+                    east = east + Int32.Parse(nav.Substring(1));
+                    continue;
+                }
+                else if (instruct == 'W')
+                {
+                    east = east - Int32.Parse(nav.Substring(1));
+                    continue;
+                }
+                else if (instruct == 'L')
+                {
+                    dir = dir - Int32.Parse(nav.Substring(1));
+                }
+                else if (instruct == 'R')
+                {
+                    dir = dir + Int32.Parse(nav.Substring(1));
+                }
+                dir = dir % 360;
+                if (dir < 0)
+                {
+                    dir = dir + 360;
+                }
+                switch (dir)
+                {
+                    case 0:
+                        dirChar = 'N';
+                        break;
+                    case 90:
+                        dirChar = 'E';
+                        break;
+                    case 180:
+                        dirChar = 'S';
+                        break;
+                    case 270:
+                        dirChar = 'W';
+                        break;
+                }
+                if (instruct == 'F')
+                {
+                    instruct = dirChar;
+                    goto redo;
+                }
+            }
+            Console.WriteLine($"The Manhattan distance of the ship is {Math.Abs(north) + Math.Abs(east)}");
         }
 
         private static void Day11()
