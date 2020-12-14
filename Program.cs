@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,481 @@ namespace Advent_of_Code
     {
         static void Main(string[] args)
         {
-            Day9();
+            Day11();
+        }
+
+        private static void Day11()
+        {
+            var seating = File.ReadAllLines("###\\Advent of Code\\Day11.txt");
+            bool changed = true;
+            int currentIteration = 1;
+            StringBuilder sb = new StringBuilder(1000000);
+            do
+            {
+                sb = new StringBuilder(1000000);
+                int currentRow = 0;
+                changed = false;
+                foreach (string row in seating)
+                {    
+                    int currentSpace = 0;
+                    foreach (char space in row)
+                    {
+                        if (space == '.')
+                        {
+                            sb.Append('.');
+                            currentSpace++;
+                            continue;
+                        }
+                        if (currentRow == 0)
+                        {
+                            if (currentSpace == 0)
+                            {
+                                if (space == 'L')
+                                {
+                                    if (row[currentSpace + 1] != '#' && seating[currentRow + 1][currentSpace] != '#' && seating[currentRow + 1][currentSpace + 1] != '#')
+                                    {
+                                        sb.Append('#');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('L');
+                                    }
+                                }
+                                else if (space == '#')
+                                {
+                                    StringBuilder sb2 = new StringBuilder();
+                                    int i = 0;
+                                    sb2.Append(row[currentSpace + 1]).Append(seating[currentRow + 1][currentSpace]).Append(seating[currentRow + 1][currentSpace + 1]);
+                                    foreach (char character in sb2.ToString())
+                                    {
+                                        if (character == '#')
+                                        {
+                                            i++;
+                                        }
+                                    }
+                                    if (i >= 4)
+                                    {
+                                        sb.Append('L');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('#');
+                                    }
+                                }
+                            }
+                            else if (currentSpace >= row.Length - 1)
+                            {
+                                if (space == 'L')
+                                {
+                                    if (row[currentSpace - 1] != '#' && seating[currentRow + 1][currentSpace - 1] != '#' && seating[currentRow + 1][currentSpace] != '#')
+                                    {
+                                        sb.Append('#');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('L');
+                                    }
+                                }
+                                else if (space == '#')
+                                {
+                                    StringBuilder sb2 = new StringBuilder();
+                                    int i = 0;
+                                    sb2.Append(row[currentSpace - 1]).Append(seating[currentRow + 1][currentSpace - 1]).Append(seating[currentRow + 1][currentSpace]);
+                                    foreach (char character in sb2.ToString())
+                                    {
+                                        if (character == '#')
+                                        {
+                                            i++;
+                                        }
+                                    }
+                                    if (i >= 4)
+                                    {
+                                        sb.Append('L');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('#');
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (space == 'L')
+                                {
+                                    if (row[currentSpace - 1] != '#' && row[currentSpace + 1] != '#' && seating[currentRow + 1][currentSpace - 1] != '#' && seating[currentRow + 1][currentSpace] != '#' && seating[currentRow + 1][currentSpace + 1] != '#')
+                                    {
+                                        sb.Append('#');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('L');
+                                    }
+                                }
+                                else if (space == '#')
+                                {
+                                    StringBuilder sb2 = new StringBuilder();
+                                    int i = 0;
+                                    sb2.Append(row[currentSpace - 1]).Append(row[currentSpace + 1]).Append(seating[currentRow + 1][currentSpace - 1]).Append(seating[currentRow + 1][currentSpace]).Append(seating[currentRow + 1][currentSpace + 1]);
+                                    foreach (char character in sb2.ToString())
+                                    {
+                                        if (character == '#')
+                                        {
+                                            i++;
+                                        }
+                                    }
+                                    if (i >= 4)
+                                    {
+                                        sb.Append('L');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('#');
+                                    }
+                                }
+                            }
+                        }
+                        else if (currentRow >= seating.Length - 1)
+                        {
+                            if (currentSpace == 0)
+                            {
+                                if (space == 'L')
+                                {
+                                    if (row[currentSpace + 1] != '#' && seating[currentRow - 1][currentSpace] != '#' && seating[currentRow - 1][currentSpace + 1] != '#')
+                                    {
+                                        sb.Append('#');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('L');
+                                    }
+                                }
+                                else if (space == '#')
+                                {
+                                    StringBuilder sb2 = new StringBuilder();
+                                    int i = 0;
+                                    sb2.Append(row[currentSpace + 1]).Append(seating[currentRow - 1][currentSpace]).Append(seating[currentRow - 1][currentSpace + 1]);
+                                    foreach (char character in sb2.ToString())
+                                    {
+                                        if (character == '#')
+                                        {
+                                            i++;
+                                        }
+                                    }
+                                    if (i >= 4)
+                                    {
+                                        sb.Append('L');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('#');
+                                    }
+                                }
+                            }
+                            else if (currentSpace >= row.Length - 1)
+                            {
+                                if (space == 'L')
+                                {
+                                    if (row[currentSpace - 1] != '#' && seating[currentRow - 1][currentSpace - 1] != '#' && seating[currentRow - 1][currentSpace] != '#')
+                                    {
+                                        sb.Append('#');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('L');
+                                    }
+                                }
+                                else if (space == '#')
+                                {
+                                    StringBuilder sb2 = new StringBuilder();
+                                    int i = 0;
+                                    sb2.Append(row[currentSpace - 1]).Append(seating[currentRow - 1][currentSpace - 1]).Append(seating[currentRow - 1][currentSpace]);
+                                    foreach (char character in sb2.ToString())
+                                    {
+                                        if (character == '#')
+                                        {
+                                            i++;
+                                        }
+                                    }
+                                    if (i >= 4)
+                                    {
+                                        sb.Append('L');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('#');
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (space == 'L')
+                                {
+                                    if (row[currentSpace - 1] != '#' && row[currentSpace + 1] != '#' && seating[currentRow - 1][currentSpace - 1] != '#' && seating[currentRow - 1][currentSpace] != '#' && seating[currentRow - 1][currentSpace + 1] != '#')
+                                    {
+                                        sb.Append('#');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('L');
+                                    }
+                                }
+                                else if (space == '#')
+                                {
+                                    StringBuilder sb2 = new StringBuilder();
+                                    int i = 0;
+                                    sb2.Append(row[currentSpace - 1]).Append(row[currentSpace + 1]).Append(seating[currentRow - 1][currentSpace - 1]).Append(seating[currentRow - 1][currentSpace]).Append(seating[currentRow - 1][currentSpace + 1]);
+                                    foreach (char character in sb2.ToString())
+                                    {
+                                        if (character == '#')
+                                        {
+                                            i++;
+                                        }
+                                    }
+                                    if (i >= 4)
+                                    {
+                                        sb.Append('L');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('#');
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (currentSpace == 0)
+                            {
+                                if (space == 'L')
+                                {
+                                    if (row[currentSpace + 1] != '#' && seating[currentRow - 1][currentSpace] != '#' && seating[currentRow - 1][currentSpace + 1] != '#' && seating[currentRow + 1][currentSpace] != '#' && seating[currentRow + 1][currentSpace + 1] != '#')
+                                    {
+                                        sb.Append('#');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('L');
+                                    }
+                                }
+                                else if (space == '#')
+                                {
+                                    StringBuilder sb2 = new StringBuilder();
+                                    int i = 0;
+                                    sb2.Append(row[currentSpace + 1]).Append(seating[currentRow - 1][currentSpace]).Append(seating[currentRow - 1][currentSpace + 1]).Append(seating[currentRow + 1][currentSpace]).Append(seating[currentRow + 1][currentSpace + 1]);
+                                    foreach (char character in sb2.ToString())
+                                    {
+                                        if (character == '#')
+                                        {
+                                            i++;
+                                        }
+                                    }
+                                    if (i >= 4)
+                                    {
+                                        sb.Append('L');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('#');
+                                    }
+                                }
+                            }
+                            else if (currentSpace >= row.Length - 1)
+                            {
+                                if (space == 'L')
+                                {
+                                    if (row[currentSpace - 1] != '#' && seating[currentRow - 1][currentSpace - 1] != '#' && seating[currentRow - 1][currentSpace] != '#' && seating[currentRow + 1][currentSpace - 1] != '#' && seating[currentRow + 1][currentSpace] != '#')
+                                    {
+                                        sb.Append('#');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('L');
+                                    }
+                                }
+                                else if (space == '#')
+                                {
+                                    StringBuilder sb2 = new StringBuilder();
+                                    int i = 0;
+                                    sb2.Append(row[currentSpace - 1]).Append(seating[currentRow - 1][currentSpace - 1]).Append(seating[currentRow - 1][currentSpace]).Append(seating[currentRow + 1][currentSpace - 1]).Append(seating[currentRow + 1][currentSpace]);
+                                    foreach (char character in sb2.ToString())
+                                    {
+                                        if (character == '#')
+                                        {
+                                            i++;
+                                        }
+                                    }
+                                    if (i >= 4)
+                                    {
+                                        sb.Append('L');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('#');
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (space == 'L')
+                                {
+                                    if (row[currentSpace - 1] != '#' && row[currentSpace + 1] != '#' && seating[currentRow - 1][currentSpace - 1] != '#' && seating[currentRow - 1][currentSpace] != '#' && seating[currentRow - 1][currentSpace + 1] != '#' && seating[currentRow + 1][currentSpace - 1] != '#' && seating[currentRow + 1][currentSpace] != '#' && seating[currentRow + 1][currentSpace + 1] != '#')
+                                    {
+                                        sb.Append('#');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('L');
+                                    }
+                                }
+                                else if (space == '#')
+                                {
+                                    StringBuilder sb2 = new StringBuilder();
+                                    int i = 0;
+                                    sb2.Append(row[currentSpace - 1]).Append(row[currentSpace + 1]).Append(seating[currentRow - 1][currentSpace - 1]).Append(seating[currentRow - 1][currentSpace]).Append(seating[currentRow - 1][currentSpace + 1]).Append(seating[currentRow + 1][currentSpace - 1]).Append(seating[currentRow + 1][currentSpace]).Append(seating[currentRow + 1][currentSpace + 1]);
+                                    foreach (char character in sb2.ToString())
+                                    {
+                                        if (character == '#')
+                                        {
+                                            i++;
+                                        }
+                                    }
+                                    if (i >= 4)
+                                    {
+                                        sb.Append('L');
+                                        changed = true;
+                                    }
+                                    else
+                                    {
+                                        sb.Append('#');
+                                    }
+                                }
+                            }
+                        }
+                        currentSpace++;
+                    }
+                    if (currentRow < seating.Length - 1)
+                        sb.Append("\n");
+                    currentRow++;
+                }
+                foreach (string row in sb.ToString().Split(Environment.NewLine.ToCharArray()))
+                    Console.WriteLine(row);
+                Console.WriteLine();
+                Console.WriteLine($"Iteration {currentIteration} complete!");
+                Console.WriteLine();
+                currentIteration++;
+                seating = sb.ToString().Split(Environment.NewLine.ToCharArray());
+            }
+            while (changed);
+            int count = 0;
+            foreach(string line in seating)
+            {
+                foreach(char character in line)
+                {
+                    if (character == '#')
+                    {
+                        count++;
+                    }
+                }
+            }
+            Console.WriteLine($"There are {count} occupied chairs.");
+            Console.ReadLine();
+            
+        }
+
+        private static void Day10()
+        {
+            var adapters = File.ReadAllLines("###\\Advent of Code\\Day10.txt");
+            List<int> differences = new List<int>();
+            List<int> paths = new List<int>();
+            List<int> distinctWays = new List<int>();
+#pragma warning disable CS0219
+            int ones = 0;
+            int threes = 0;
+#pragma warning restore CS0219
+            int baseJolt = 0;
+            paths.Add(baseJolt);
+            int i = 1;
+        /*do
+        {
+            if (adapters.Contains((baseJolt + i).ToString()))
+            {
+                baseJolt = baseJolt + i;
+                differences.Add(i);
+                i = 1;
+                Console.WriteLine(baseJolt);
+            }
+            else
+            {
+                i++;
+            }
+        }
+        while (differences.Count != 106);
+        foreach (int difference in differences)
+        {
+            if (difference == 1)
+            {
+                ones++;
+            }
+            else
+            {
+                threes++;
+            }
+        }
+        threes++;
+        Console.WriteLine($"There are {ones} 1 volt differences and {threes} 3 volt differences.");
+        Console.ReadLine();*/
+        restart:
+            List<int> pathsTemp = new List<int>();
+            foreach (int path in paths)
+            {
+                do
+                {
+                    if (adapters.Contains((path + i).ToString()))
+                    {
+                        pathsTemp.Add(path + i);
+                    }
+                    i++;
+                }
+                while (i != 4);
+                i = 1;
+            }
+            foreach(int pathTemp in pathsTemp)
+            {
+                if (pathTemp == 168)
+                {
+                    distinctWays.Add(pathTemp);
+                    pathsTemp.Remove(pathTemp);
+                }
+                if (pathTemp > 168)
+                {
+                    pathsTemp.Remove(pathTemp);
+                }
+            }
+            paths = pathsTemp;
+            Console.WriteLine(paths.Max(path => path));
+            if (paths.Count != 0)
+            {
+                goto restart;
+            }
+            Console.WriteLine($"There are {distinctWays.Count} distinct ways to arrange the adapters.");
+            Console.ReadLine();
         }
 
         private static void Day9()
@@ -87,6 +562,7 @@ namespace Advent_of_Code
             Console.WriteLine($"The encryption weakness is {min + max}");
             Console.ReadLine();
         }
+
         private static void Day8()
         {
             var instructions = File.ReadAllLines("###\\Advent of Code\\Day8.txt");
